@@ -1,7 +1,7 @@
-#Three Breads
+# Three Breads
 The three beads is a simple game that needs the involvement of two players. This is the game which I and my friend used to play during the class break in school. We draw the board on paper and make the beads out of peanut shells, and color them with two different maker pens. This is an attempt to recreate the memories by creating a React Application
 
-#Live at 
+# Live at 
 http://dochyper.unitec.ac.nz/UnitecAnimalUnit/threebeads/
 
 # Getting Started with Create React App
