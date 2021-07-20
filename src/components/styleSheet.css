@@ -1,0 +1,916 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --board-main-color: #18a558;
+  --board-inner-color: #a3ebb1;
+  --board-hole-color: rgba(65, 37, 37, 0.226);
+}
+
+body {
+  background-color: #31352e;
+  overscroll-behavior: contain;
+}
+.main-container {
+  height: 100vh;
+  width: 100vw;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1vw;
+  overflow: hidden;
+  position: fixed;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-Player---------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+.player {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.player .sliding {
+  width: 5vmin;
+  height: 15vmin;
+  display: flex;
+  align-items: center;
+  background-color: yellow;
+  font-size: 5vmin;
+  display: none;
+}
+
+.sliding-button {
+  padding: 1vmin;
+  text-align: right;
+  width: 100%;
+}
+
+.player:nth-of-type(3) {
+  flex-direction: row-reverse;
+}
+
+.player-details {
+  width: 20vw;
+  height: 70vh;
+  background-color: #0c2d48;
+}
+
+.player-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 1vmin;
+  background-color: #145da0;
+  box-shadow: 0.5vmin 0.5vmin 1vmin black;
+}
+
+.player-name {
+  font-size: 2.5vmin;
+  padding: 1vmin;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 0.2vmin;
+}
+
+.player-name::after {
+  content: ":";
+  padding-left: 1vmin;
+}
+
+.player-color {
+  width: 5vmin;
+  height: 5vmin;
+  padding: 1vmin;
+  border-radius: 50%;
+  margin-left: 2vmin;
+}
+
+.main-container .player:nth-of-type(1) .player-color {
+  background-color: #e6dd3b !important;
+}
+
+.main-container .player:nth-of-type(3) .player-color {
+  background-color: white !important;
+}
+
+.match-details {
+  color: white;
+  height: 62.5vh;
+  padding: 1vmin;
+  overflow-y: scroll;
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+.match-details::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.match-details {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.match-details table {
+  margin-top: 0.5vmin;
+  width: 100%;
+}
+
+.match-details table thead th {
+  text-align: center;
+  background-color: #b1d4e0;
+  padding: 0.5vmin;
+  color: black;
+  font-size: 2vmin;
+  font-weight: bold;
+  letter-spacing: 0.1vmin;
+}
+
+.match-details table thead tr:nth-of-type(2) {
+  background-color: black;
+}
+
+.match-details table thead tr:nth-of-type(2) td {
+  font-size: 1.2vmin;
+  color: lightcoral;
+  padding: 1vmin;
+  text-decoration: underline;
+}
+
+.match-details table td {
+  padding: 1vmin;
+}
+
+.match-details table tbody tr {
+  background-color: rgba(0, 0, 0, 0.342);
+}
+.match-details table tr td:nth-last-of-type(1) {
+  text-align: right;
+}
+
+.match-details table tbody tr td {
+  font-size: 1vmin;
+  padding: 0.5vmin;
+}
+
+.match-details table tbody tr td button {
+  padding: 0.5vmin 1vmin;
+  margin-right: 0.5vmin;
+  font-size: 1vmin;
+  letter-spacing: 0.1vmin;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  transition: all 0.5s linear;
+}
+
+.match-details table tbody tr td button:hover {
+  background-color: #145da0;
+  color: white;
+}
+.match-details table tbody tr td {
+  border-bottom: 0.1vmin solid rgba(255, 255, 0, 0.404);
+}
+
+.match-row-warning {
+  color: rgba(219, 214, 214, 0.918);
+  text-align: center !important;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-game---------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+.game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-status---------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+.status {
+  width: 30vw;
+  height: auto;
+  background-color: #0c2d48;
+  margin: 0.5vmin auto;
+}
+
+.status:nth-of-type(3) {
+  transform: rotate(-180deg);
+  visibility: hidden;
+}
+
+.status .info {
+  font-size: 1.2vmin;
+  color: white;
+  text-transform: uppercase;
+  font-weight: bold;
+  background-color: #145da0;
+  padding: 0.5vmin;
+  border: 0.3vmin solid black;
+  margin: 0.5vmin;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.info-type {
+  width: 25%;
+  text-align: center;
+}
+
+.scoreboard {
+  display: flex;
+  flex-direction: row;
+  font-size: 1.5vmin;
+  font-weight: bold;
+  align-items: center;
+  justify-content: space-between;
+  background-color: black;
+  flex-grow: 1;
+  padding: 0.5vmin;
+}
+
+.scoreboard .player-name {
+  font-size: 1vmin;
+  width: 35%;
+  text-align: center;
+  color: black;
+}
+
+.scoreboard .player-name::after {
+  content: "";
+}
+.p1 {
+  background-color: yellow;
+}
+
+.p2 {
+  background-color: White;
+}
+
+.info:nth-of-type(2) .player-name {
+  width: 100%;
+}
+
+.matchNumber {
+  padding: 0.2vmin;
+  font-size: 1.5vmin;
+  text-align: center;
+  width: 100%;
+  text-transform: capitalize;
+}
+/*----------------------------------------------------------------------------*/
+/*-Board---------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+.board {
+  width: 48vw;
+  height: 50vh;
+  background-color: var(--board-main-color);
+  border-radius: 3.5vmin;
+  padding: 8vmin;
+  position: relative;
+  box-shadow: 0.1vmin 0.1vmin 0.5vmin black;
+  margin: 0.2vmin auto;
+}
+
+.board-inner {
+  width: 100%;
+  height: 100%;
+  background-color: var(--board-inner-color);
+  border-radius: 1vmin;
+  position: relative;
+  overflow: hidden;
+}
+
+.bar {
+  background-color: var(--board-main-color);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.bar-1 {
+  height: 65vh;
+  width: 6vmin;
+}
+
+.bar-2 {
+  height: 6vmin;
+  width: 65vw;
+}
+.svgStyle {
+  height: 100%;
+  width: 100%;
+}
+.bar-3 {
+  stroke: var(--board-main-color);
+  stroke-width: 6vmin;
+}
+.bar-4 {
+  height: 60vh;
+  width: 15vmin;
+  transform: translate(-50%, -50%) skewX(67deg);
+}
+
+.hole {
+  width: 6vmin;
+  height: 6vmin;
+  background-color: var(--board-hole-color);
+  position: absolute;
+
+  z-index: 1;
+  border-radius: 50%;
+}
+
+.hole:nth-of-type(1) {
+  bottom: 2.5vmin;
+  left: 2vmin;
+}
+
+.hole:nth-of-type(2) {
+  top: 50%;
+  left: 2vmin;
+  transform: translateY(-50%);
+}
+.hole:nth-of-type(3) {
+  top: 2vmin;
+  left: 2vmin;
+}
+.hole:nth-of-type(4) {
+  bottom: 2vmin;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.hole:nth-of-type(5) {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.hole:nth-of-type(6) {
+  top: 2vmin;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.hole:nth-of-type(7) {
+  bottom: 2vmin;
+  right: 2vmin;
+}
+.hole:nth-of-type(8) {
+  top: 50%;
+  right: 2vmin;
+  transform: translateY(-50%);
+}
+.hole:nth-of-type(9) {
+  top: 2vmin;
+  right: 2vmin;
+}
+
+.bread {
+  width: 85%;
+  height: 85%;
+  margin: 7.5% auto;
+  border-radius: 50%;
+  cursor: move;
+  transition: all 1s ease-in;
+}
+
+.bread:hover {
+  transform: scale(1.2);
+}
+
+.player-1 {
+  background-color: #e6dd3b;
+}
+.player-2 {
+  background-color: #ffffff;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-Message---------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+.message {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.596);
+  z-index: 5;
+  top: 0;
+  display: none;
+}
+
+.message-box {
+  width: 60vmin;
+  height: 30vmin;
+  background-color: black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 0.5vmin;
+  display: flex;
+  flex-direction: column;
+
+  box-shadow: 0.2vmin 0.3vmin 1vmin black;
+}
+
+.message-heading {
+  display: flex;
+  padding: 0.5vmin;
+  background-color: red;
+  align-items: center;
+}
+
+.heading-text {
+  flex-grow: 1;
+  font-size: 2vmin;
+  font-weight: bold;
+  letter-spacing: 0.2vmin;
+  text-transform: uppercase;
+  padding-left: 2vmin;
+}
+
+.close-message i {
+  font-size: 5vmin;
+  color: white;
+  cursor: pointer;
+  transition: all 1s linear;
+}
+
+.close-message i:hover {
+  color: black;
+}
+
+.text-message {
+  flex-grow: 1;
+  font-size: 2vmin;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  line-height: 3vmin;
+}
+
+.message-confirmation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5vmin;
+}
+
+.message-confirmation button {
+  font-size: 1.5vmin;
+  padding: 0.8vmin 1vmin;
+  width: 10vmin;
+  margin: auto 2vmin 1vmin;
+  cursor: pointer;
+  transition: all 1s linear;
+}
+.message-confirmation button:hover {
+  background-color: black;
+  color: white;
+}
+
+.warning-message,
+.wining-message {
+  display: none;
+}
+/*----------------------------------------------------------------------------*/
+/*-preview match---------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+.preview-match {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.178);
+  z-index: 5;
+  top: 0;
+  display: none;
+}
+
+.match-info-box {
+  width: 20vw;
+  background-color: white;
+  position: absolute;
+
+  top: 5vh;
+  right: 3vw;
+}
+
+.preview-match header {
+  text-align: center;
+  font-size: 3vmin;
+  padding: 1vmin;
+  border-bottom: 1vmin solid;
+  background-color: var(--board-main-color);
+}
+
+.preview-match .row {
+  padding: 0.5vmin;
+  display: flex;
+  justify-content: center;
+  background-color: var(--board-inner-color);
+  border-bottom: 1px solid black;
+}
+
+.preview-match .level,
+.preview-match .data {
+  width: 30%;
+}
+
+.preview-match .level {
+  text-align: right;
+}
+.preview-match .data {
+  padding-left: 1vmin;
+}
+
+@media only screen and (max-width: 1500px) {
+  .player-details {
+    height: 60vh;
+  }
+  .match-details {
+    height: 52.5vh;
+  }
+
+  .status {
+    width: 35vw;
+  }
+
+  .board {
+    width: 52vw;
+    height: 40vh;
+    background-color: var(--board-main-color);
+    border-radius: 3vmin;
+    padding: 6.5vmin;
+    position: relative;
+    box-shadow: 0.1vmin 0.1vmin 0.5vmin black;
+    margin: 0.2vmin auto;
+  }
+
+  .bar-3 {
+    height: 100%;
+  }
+
+  .hole:nth-of-type(1) {
+    bottom: 1vmin;
+    left: 1vmin;
+  }
+
+  .hole:nth-of-type(2) {
+    left: 1vmin;
+  }
+  .hole:nth-of-type(3) {
+    top: 1vmin;
+    left: 1vmin;
+  }
+  .hole:nth-of-type(4) {
+    bottom: 1vmin;
+  }
+
+  .hole:nth-of-type(6) {
+    top: 1vmin;
+  }
+  .hole:nth-of-type(7) {
+    bottom: 1vmin;
+    right: 1vmin;
+  }
+  .hole:nth-of-type(8) {
+    right: 1vmin;
+  }
+  .hole:nth-of-type(9) {
+    top: 1vmin;
+    right: 1vmin;
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /*-Message---------------------------------------------------------------------------*/
+  /*----------------------------------------------------------------------------*/
+  .message-box {
+    width: 55vmin;
+    height: 26vmin;
+  }
+
+  .close-message i {
+    font-size: 3.5vmin;
+  }
+
+  .text-message {
+    font-size: 1.8vmin;
+    line-height: 2.8vmin;
+  }
+
+  .message-confirmation button {
+    font-size: 1.4vmin;
+    padding: 0.5vmin 0.8vmin;
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /*-previewMatch---------------------------------------------------------------------------*/
+  /*----------------------------------------------------------------------------*/
+  .preview-match header {
+    font-size: 2.5vmin;
+    padding: 0.8vmin;
+  }
+  .preview-match .level,
+  .preview-match .data {
+    width: 45%;
+  }
+}
+
+@media only screen and (max-width: 1350px) {
+  /*----------------------------------------------------------------------------*/
+  /*-player Details--------------------------------------------------------------------------*/
+  /*----------------------------------------------------------------------------*/
+  .player-details {
+    width: 21.5vw;
+  }
+
+  .player-name {
+    font-size: 2vmin;
+    padding: 0.5vmin;
+  }
+
+  .player-color {
+    width: 3.5vmin;
+    height: 3.5vmin;
+  }
+
+  .match-details {
+    padding: 0.5vmin;
+    height: 54vh;
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /*-Message---------------------------------------------------------------------------*/
+  /*----------------------------------------------------------------------------*/
+
+  .message-box {
+    width: 50vmin;
+    height: 25vmin;
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /*-preview match---------------------------------------------------------------------------*/
+  /*----------------------------------------------------------------------------*/
+
+  .match-info-box {
+    width: 25vw;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  /*----------------------------------------------------------------------------*/
+  /*-Player Details---------------------------------------------------------------------------*/
+  /*----------------------------------------------------------------------------*/
+  .player-details {
+    width: 25vw;
+  }
+  .match-details {
+    height: 54vh;
+  }
+  /*----------------------------------------------------------------------------*/
+  /*-status---------------------------------------------------------------------------*/
+  /*----------------------------------------------------------------------------*/
+  .status {
+    width: 40vw;
+  }
+  /*----------------------------------------------------------------------------*/
+  /*-Board---------------------------------------------------------------------------*/
+  /*----------------------------------------------------------------------------*/
+
+  .board {
+    width: 45vw;
+    height: 65vh;
+  }
+  .hole {
+    width: 6.5vmin;
+    height: 6.5vmin;
+  }
+  .hole:nth-of-type(1) {
+    top: 1vmin;
+    left: 1vmin;
+  }
+
+  .hole:nth-of-type(2) {
+    top: 1vmin;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .hole:nth-of-type(3) {
+    top: 1vmin;
+    left: 99%;
+    transform: translateX(-99%);
+  }
+  .hole:nth-of-type(4) {
+    left: 1vmin;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .hole:nth-of-type(6) {
+    top: 50%;
+    left: 98%;
+    transform: translate(-98%, -50%);
+  }
+  .hole:nth-of-type(7) {
+    bottom: 1vmin;
+    left: 1vmin;
+  }
+  .hole:nth-of-type(8) {
+    left: 50%;
+    top: 99%;
+    transform: translate(-50%, -99%);
+  }
+  .hole:nth-of-type(9) {
+    top: 99%;
+    right: 1vmin;
+    transform: translateY(-99%);
+  }
+}
+
+@media only screen and (max-width: 479px) {
+  /*----------------------------------------------------------------------------*/
+  /*-Player---------------------------------------------------------------------------*/
+  /*----------------------------------------------------------------------------*/
+  .player {
+    position: fixed;
+  }
+
+  .player:nth-of-type(3) {
+    right: 1vmin;
+  }
+  .player-details {
+    width: 50vw;
+    height: 80vh;
+    display: none;
+    transition: all 1s linear;
+  }
+
+  .player-popup {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    margin: 0;
+    background-color: rgba(28, 37, 28, 0.712);
+    padding: 2vmin;
+
+    z-index: 5;
+  }
+
+  .player:nth-of-type(3) .player-details {
+    transform: rotate(180deg);
+  }
+  .player:nth-of-type(3) .sliding {
+    background-color: white;
+  }
+  .player:nth-of-type(3) .sliding-button {
+    text-align: left;
+  }
+  .player:nth-of-type(3) .sliding-button i {
+    transform: rotate(180deg);
+  }
+  .rotate-icon {
+    transform: rotate(180deg);
+  }
+  .player-name {
+    font-size: 3vmin;
+  }
+  .player-color {
+    width: 5vmin;
+    height: 5vmin;
+  }
+  .match-details {
+    height: 73vh;
+  }
+
+  .match-details table thead th {
+    font-size: 2.5vmin;
+  }
+
+  .match-details table thead tr:nth-of-type(2) td {
+    font-size: 1.8vmin;
+  }
+  .match-details table tbody tr td {
+    font-size: 1.5vmin;
+    padding: 0.5vmin;
+  }
+  .player .sliding {
+    display: flex;
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /*-game---------------------------------------------------------------------------*/
+  /*----------------------------------------------------------------------------*/
+ 
+  /*----------------------------------------------------------------------------*/
+  /*-status---------------------------------------------------------------------------*/
+  /*----------------------------------------------------------------------------*/
+  .status {
+    width: 70vw;
+  }
+
+  .status:nth-of-type(3) {
+    visibility: visible;
+  }
+
+  .status .info {
+    font-size: 1.8vmin;
+    padding: 0.8vmin;
+  }
+  .scoreboard {
+    font-size: 2vmin;
+  }
+
+  .scoreboard .player-name {
+    font-size: 2vmin;
+    width: 35%;
+    text-align: center;
+    color: black;
+  }
+
+  .matchNumber {
+    font-size: 1.8vmin;
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /*-Board---------------------------------------------------------------------------*/
+  /*----------------------------------------------------------------------------*/
+
+  .board {
+    width: 85vw;
+    height: 70vh;
+    padding: 10vmin;
+    transform: rotate(180deg);
+  }
+  .bar-1 {
+    height: 100%;
+  }
+  .bar-2 {
+    width: 100%;
+  }
+
+  .hole {
+    width: 10vmin;
+    height: 10vmin;
+  }
+  .hole:nth-of-type(4) {
+    left: 0.5vmin;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .hole:nth-of-type(6) {
+    top: 50%;
+    left: 99%;
+    transform: translate(-99%, -50%);
+  }
+  /*----------------------------------------------------------------------------*/
+  /*-preview match---------------------------------------------------------------------------*/
+  /*----------------------------------------------------------------------------*/
+  .match-info-box {
+    width: 98vw;
+    top: 1vh;
+    left: 1vw;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .preview-match header {
+    width: 100%;
+    font-size: 4vmin;
+  }
+  .preview-match .row {
+    width: 50%;
+  }
+  .preview-match .level,
+  .preview-match .data {
+    font-size: 2.7vmin;
+  }
+
+  .preview-match .level {
+    width: 35%;
+  }
+
+  .preview-match .data {
+    width: 65%;
+  }
+}
